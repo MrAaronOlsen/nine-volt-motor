@@ -1,5 +1,5 @@
 require 'gosu'
-require './a_motor'
+require './nine_volt'
 
 def movement
 
@@ -47,25 +47,6 @@ def movement
 		if button_down?(Gosu::KbS)
 			@ball.location.add(Vector.new(0,5))
 		end
-
-end
-
-def wall(ball)
-
-	if ball.location.x > $window_width - ball.radius || ball.location.x < ball.radius
-		ball.velocity.x*=-1
-		return ball.velocity
-
-	elsif @ball.location.y > $window_height - @ball.radius || @ball.location.y < @ball.radius
-
-		ball.velocity.y*=-1
-		return ball.velocity
-
-	else
-
-		return ball.velocity
-
-	end
 
 end
 

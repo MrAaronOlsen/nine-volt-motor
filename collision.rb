@@ -1,7 +1,7 @@
 class Collision
 
 	attr_accessor :mtv
-	attr_reader :collision, :collision_face, :direction
+	attr_reader :collision, :collision_face
 
 	def initialize(check_part, against_part)
 
@@ -85,27 +85,3 @@ class Collision
 
 end
 
-def bbox_collide(obj1, obj2)
-
-	if aabb(obj1.bbox, obj2.bbox)
-
-		obj2.groups.each { |group| 
-
-			if aabb(obj1.bbox, group.bbox)
-
-				group.parts.each { |part| 
-
-					if aabb(obj1.bbox, part.bbox)	
-						
-						return part
-					
-					end
-				}
-			end
-		}
-
-	end
-
-	return false
-
-end
