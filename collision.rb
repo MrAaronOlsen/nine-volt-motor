@@ -27,7 +27,7 @@ class Collision
 
 			c = Vector.sub(@check_part.location.location, @points[f_start].location)
 
-			if c.mag < @radius # corner
+			if c.mag < @radius*0.8 # corner
 				
 				face = c.normal
 
@@ -49,7 +49,7 @@ class Collision
 					face_normal_dot = dot(face.normal_unit, c)
 				end
 				
-				if face_dot >= 0 && face_dot < face.length && face_normal_dot > 0 &&  face_normal_dot < @radius
+				if face_dot >= 0 && face_dot <= face.length && face_normal_dot >= 0 &&  face_normal_dot <= @radius
 				
 					@penetration = @radius - face_normal_dot
 					@mtv = get_mtv(face_normal_dot)
@@ -77,7 +77,7 @@ class Collision
 		mtv_mag = @velocity.mag*mtv_ratio
 		
 		mtv = @velocity.unit
-		mtv.set_mag(mtv_mag)
+		mtv.set_mag(mtv_mag*1.5)
 		
 		return mtv
 

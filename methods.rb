@@ -55,15 +55,9 @@ def bbox_collide(obj1, obj2)
 		obj2.groups.each { |group| 
 
 			if aabb(obj1.bbox, group.bbox)
-
-				group.parts.each { |part| 
-
-					if aabb(obj1.bbox, part.bbox)	
 						
-						return part
-					
-					end
-				}
+				return group
+				
 			end
 		}
 

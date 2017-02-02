@@ -1,55 +1,6 @@
 require 'gosu'
 require './nine_volt'
 
-def movement
-
-	if button_down?(Gosu::KbC)
-			@boxes.center
-		end
-
-		if button_down?(Gosu::KbO)
-			@boxes.origin
-		end
-
-		if button_down?(Gosu::KbLeft)
-
-			@boxes.rotate(0.1)
-			
-			@boxes.groups.each { |group|
-
-				group.rotate(0.3) 
-
-				group.parts.each { |part| part.rotate(1) }
-			}
-
-		elsif button_down?(Gosu::KbRight)
-
-			@boxes.rotate(-0.1)
-			
-			@boxes.groups.each { |group|
-
-				group.rotate(-0.3) 
-
-				group.parts.each { |part| part.rotate(-1) }
-			}
-
-		end
-
-		if button_down?(Gosu::KbA)
-			@ball.location.add(Vector.new(-5,0))
-		end
-		if button_down?(Gosu::KbD)
-			@ball.location.add(Vector.new(5,0))
-		end
-		if button_down?(Gosu::KbW)
-			@ball.location.add(Vector.new(0,-5))
-		end
-		if button_down?(Gosu::KbS)
-			@ball.location.add(Vector.new(0,5))
-		end
-
-end
-
 class Window < Gosu::Window
 
 	def initialize
@@ -60,59 +11,79 @@ class Window < Gosu::Window
 	   	super($window_width, $window_height, false)
 	   	self.caption = "Test Environment"
 
-		@static = Body.new(600, 600)
-			group = Group.new(0, 0)
-			group.add_part(Part.rect(0, 0, 50, 500, 0x55_bcbcff))
-			group.add_part(Part.rect(0, 0, 1200, 1200, 0x22_ffffff))
-		@static.add_group(group)
+		@static = []
+
+		boxs = Body.new(600, 600)
+			group1 = Group.new(0, 0)
+				group1.add_part(Part.rect(0, 0, 500, 50, 0x55_bcbcff))
+				group1.add_part(Part.rect(0, 0, 50, 500, 0x55_bcbcff))
+			boxs.add_group(group1)
+
+			boxs.update
+			boxs.center
+
+		walls = Body.new(600, 600)
+			group2 = Group.new(0, 0)
+				group2.add_part(Part.rect(600, 600, 1200, 1200, 0x22_bcbcff))
+			walls.add_group(group2)
+
+			walls.update
+			walls.center
+
+		@static << boxs << walls
 
 		@movers = [] 
 
-		50.times { @movers << Part.ball(100, 600, 20, 0xff_eca912) }
+		100.times { @movers << Part.ball(100, 600, 20, 0xff_eca912) }
 
 		@movers.each { |mover|
-			mover.velocity = Vector.new(rand(1..10), rand(1..10))
-			mover.acceleration = rand(1.1..1.5)
+			mover.velocity = Vector.new(rand(1..30), rand(1..30))
+			mover.acceleration = rand(1.1..3)
 		}
-
-		@static.center
 
  	end
 
 	def update
+		
+		@static[0].rotate(0.5)
+		@static.each { |static| static.update }
+
+		@static.each { |static|
+
+			@movers.each { |mover|
+
+				group = bbox_collide(mover, static)
+
+				if group != false
+
+					group.parts.each { |part|
+
+						event = Collision.new(mover, part)
+
+						if event.collision == true
+
+							mover.location.location.sub(event.mtv)
+
+							event.mtv = reflect(event.mtv, event.collision_face)
+							mover.location.location.add(event.mtv)
+
+							mover.velocity = reflect(mover.velocity, event.collision_face)
+					
+						end
+
+					}
+
+				end
+			}
+		}
 
 		@movers.each { |mover| mover.update }
-		@static.rotate_parts(0.05)
-		@static.update
-
-		@movers.each { |mover|
-
-			part = bbox_collide(mover, @static)
-
-			if part != false
-
-				event = Collision.new(mover, part)
-
-				if event.collision == true
-
-					mover.location.location.sub(event.mtv)
-
-					event.mtv = reflect(event.mtv, event.collision_face)
-					mover.location.location.add(event.mtv)
-
-					mover.velocity = reflect(mover.velocity, event.collision_face)
-			
-				end
-
-			end
-
-		}
 
 	end
 
 	def draw
 
-		@static.draw
+		@static.each { |static| static.draw }
 		@movers.each { |mover| mover.draw }
 
 	end

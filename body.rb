@@ -63,7 +63,14 @@ class Body
 
 	def rotate(degree)
 
-		@groups.each { |group| group.location.rotate(degree) }
+		rotate_groups(degree)
+		rotate_parts(degree)
+
+	end
+
+	def rotate_groups(degree)
+
+		@groups.each { |group| group.rotate(degree) }
 
 	end
 

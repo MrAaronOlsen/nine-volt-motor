@@ -14,7 +14,6 @@ class Part
 		@velocity = Vector.new(0, 0)
 		@acceleration = Vector.new(0, 0)
 
-
 		if type == "ball"
 			@radius = @points[2].x
 		else @radius = nil end
@@ -31,7 +30,7 @@ class Part
 		points = [ Point.new(x1, y1),
 				    Point.new(x2, y2) ]
 
-		return Part.new("seg", x1, x2, points, color, z)
+		return Part.new("seg", x1, y1, points, color, z)
 
 	end 
 
