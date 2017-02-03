@@ -1,21 +1,22 @@
 class Body
 
-	attr_reader :points, :groups, :bbox
-	attr_accessor :location
+	attr_reader :points, :parts, :bbox
+	attr_accessor :movement
 
 # Initialize Functions
 
 	def initialize(x,y)
 
-		@location = Point.new(x, y)
-		@groups = []
+		@movement = Movement.new(Point.new(x, y))
+		@parts = []
 		@points = []
+		@events = []
 
 	end
 
-	def add_group(group)
+	def add_part(part)
 
-		@groups << group
+		@parts << part
 		update_points
 		update_bbox
 
@@ -23,17 +24,23 @@ class Body
 
 # Update Functions
 
-	def update(location = @location)
+	def update
 
-		@groups.each { |group| group.location.move(location) }
-		@groups.each { |group| group.update }
+		respond(@events)
+		@movement.update
+		rotate(@movement.rotation)
+		
+		@parts.each { |part| part.location.move(@movement.location) }
+		@parts.each { |part| part.update }
 		update_bbox
+
+		@events = []
 
 	end
 
 	def update_points
 
-		@groups.each { |group| group.points.each { |point| @points << point }}
+		@parts.each { |part| part.points.each { |point| @points << point }}
 
 	end
 
@@ -43,9 +50,11 @@ class Body
 
 	end
 
+# Reference Functions
+
 	def center
 
-		@groups.each { |group| group.center }
+		@parts.each { |part| part.center }
 
 		update
 
@@ -53,7 +62,7 @@ class Body
 
 	def origin
 
-		@groups.each { |group| group.origin }
+		@parts.each { |part| part.origin }
 
 		update
 
@@ -63,37 +72,71 @@ class Body
 
 	def rotate(degree)
 
-		rotate_groups(degree)
-		rotate_parts(degree)
-
+		@parts.each { |part| part.rotate(degree) }
+		
 	end
 
-	def rotate_groups(degree)
+	def add_event(event)
 
-		@groups.each { |group| group.rotate(degree) }
-
+		@events << event
+	
 	end
 
-	def rotate_parts(degree)
+	def respond(events)
+		
+		count = 1
 
-		@groups.each { |group|
-			group.parts.each { |part| 
-				part.rotate(degree)
-			}
+		events.each { |event|
+
+			if event.test
+			puts ""
+			puts "Event Num: #{count}"
+			puts "Number of Events: #{events.length}"
+			puts "Check Part: #{event.check_part.type}"
+			puts "Against Part: #{event.against_part.type}"
+			puts "MTV Ratio: #{event.mtv_ratio}"
+			end
+		
+			count+=1
+			
 		}
 
-	end
+		if events.length > 0
+			
+			events.each { |event|	
 
-# Draw
+				if event.is_a? Collision
+
+					if event.test == true
+						
+						puts "HIT"
+						
+						mtv = @movement.velocity.copy
+						mtv.mult(event.mtv_ratio)
+
+						reflected_mtv = reflect_vector(mtv, event.face)
+						mtv.add(reflected_mtv)
+
+						@movement.location.add(mtv)
+						@movement.reflect(event.face)
+						
+					end
+				end
+			}
+		end
+	
+end
+
+# Draw Functions
 
 	def draw
 
-		@groups.each { |group| group.draw } 
+		@parts.each { |part| part.draw } 
 		
 	# Extra Draws
 
 		#@location.draw(0xff_ffff00, 20)
-		#@bbox.draw
+		@bbox.draw
 		#@bbox.center.draw(0xff_ffff00, 8)
 
 	end

@@ -1,7 +1,7 @@
 class Part
 
 	attr_reader :points, :bbox, :type
-	attr_accessor :location, :radius, :color, :z, :velocity, :acceleration
+	attr_accessor :location, :radius, :color, :z
 
 # Initialize Functions
 
@@ -10,9 +10,6 @@ class Part
 		@type = type
 		@location = Point.new(x, y)
 		@points = points
-
-		@velocity = Vector.new(0, 0)
-		@acceleration = Vector.new(0, 0)
 
 		if type == "ball"
 			@radius = @points[2].x
@@ -27,8 +24,8 @@ class Part
 
 	def self.seg(x1, y1, x2, y2, color, z = 1)
 
-		points = [ Point.new(x1, y1),
-				    Point.new(x2, y2) ]
+		points = [ Point.new(0, 0),
+				       Point.new(x2-x1, y2-y1) ]
 
 		return Part.new("seg", x1, y1, points, color, z)
 
@@ -62,10 +59,6 @@ class Part
 
 	def update(location = @location)
 
-		@velocity.mult(@acceleration)
-		@velocity.max(5)
-		@location.add(@velocity)
-
 		@points.each { |point| point.move(location) }
 		update_bbox
 		
@@ -76,6 +69,8 @@ class Part
 		@bbox = BBox.new(@points)
 
 	end
+
+# Reference Functions
 
 	def center
 
@@ -97,7 +92,7 @@ class Part
 
 	end
 
-# Draw
+# Draw Functions
 
 	def draw
 		
@@ -123,7 +118,7 @@ class Part
 		#@points.each { |point| point.draw}
 
 		#@location.draw(0xff_00ff00, 10)
-		#@bbox.draw
+		@bbox.draw
 		#@bbox.center.draw(0xff_00ff00, 4)
 
 	end

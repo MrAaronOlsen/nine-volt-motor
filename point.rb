@@ -15,40 +15,58 @@ class Point
 
 	end
 
-# Update Functions
-
 	def set_tether(location = @location)
 
 		@tether = Vector.sub(@location, location)
 
 	end
 
-# Movement Functions
+# Update Functions
 
-	def move(location)
+	def move(location = @location)
 
 		@location = Vector.add(location, @tether)
+		update
+
+	end
+
+	def update
+
 		@x = @location.x
 		@y = @location.y
 
 	end
 
+# Movement Functions
+
 	def add(velocity)
 
 		@location.add(velocity)
+		update
 
-		@x = @location.x
-		@y = @location.y
+	end
+
+	def sub(velocity)
+
+		@location.sub(velocity)
+		update
+
+	end
+
+	def mult(velocity)
+
+		@location.mult(velocity)
+		update
 
 	end
 	
 	def rotate(degree)
 		
 		@tether.rotate(degree)
-
+		
 	end
 
-# Draw
+# Draw Functions
 
 	def draw(color = 0xff_ffffff, radius = 2)
 
@@ -69,7 +87,6 @@ class Point
 			axis1.rotate(24)
 		
 		}
-
 
 	end
 

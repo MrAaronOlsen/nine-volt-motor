@@ -11,80 +11,42 @@ class Window < Gosu::Window
 	   	super($window_width, $window_height, false)
 	   	self.caption = "Test Environment"
 
-		@static = []
+		boxes = Body.new(600, 600)
+			boxes.add_part(Part.rect(0, 0, 500, 50, 0x55_bcbcff))
+			boxes.add_part(Part.rect(0, 0, 50, 500, 0x55_bcbcff))
 
-		boxs = Body.new(600, 600)
-			group1 = Group.new(0, 0)
-				group1.add_part(Part.rect(0, 0, 500, 50, 0x55_bcbcff))
-				group1.add_part(Part.rect(0, 0, 50, 500, 0x55_bcbcff))
-			boxs.add_group(group1)
+		boxes.center
+		boxes.movement.rotation = 0.2
 
-			boxs.update
-			boxs.center
+		walls = Body.new(0, 0)
+			walls.add_part(Part.seg(50, 50, 50, 1150, 0xff_bcbcff))
+			walls.add_part(Part.seg(50, 1150, 1150, 1150, 0x55_bcbcff))
+			walls.add_part(Part.seg(1150, 1150, 1150, 50, 0x55_bcbcff))
+			walls.add_part(Part.seg(1150, 50, 50, 50, 0x55_bcbcff))
 
-		walls = Body.new(600, 600)
-			group2 = Group.new(0, 0)
-				group2.add_part(Part.rect(600, 600, 1200, 1200, 0x22_bcbcff))
-			walls.add_group(group2)
+		mover = Body.new(100, 100) 
+			mover.add_part(Part.ball(100, 100, 20, 0xff_eca912))
 
-			walls.update
-			walls.center
+		mover.movement.velocity = Vector.new(1, 1.1)
+		mover.movement.acceleration = 1.1
+		mover.movement.max = 10
 
-		@static << boxs << walls
-
-		@movers = [] 
-
-		100.times { @movers << Part.ball(100, 600, 20, 0xff_eca912) }
-
-		@movers.each { |mover|
-			mover.velocity = Vector.new(rand(1..30), rand(1..30))
-			mover.acceleration = rand(1.1..3)
-		}
+		@space = Space.new
+			@space.add_body(boxes)
+			@space.add_body(walls)
+			@space.add_body(mover)
 
  	end
 
 	def update
 		
-		@static[0].rotate(0.5)
-		@static.each { |static| static.update }
-
-		@static.each { |static|
-
-			@movers.each { |mover|
-
-				group = bbox_collide(mover, static)
-
-				if group != false
-
-					group.parts.each { |part|
-
-						event = Collision.new(mover, part)
-
-						if event.collision == true
-
-							mover.location.location.sub(event.mtv)
-
-							event.mtv = reflect(event.mtv, event.collision_face)
-							mover.location.location.add(event.mtv)
-
-							mover.velocity = reflect(mover.velocity, event.collision_face)
-					
-						end
-
-					}
-
-				end
-			}
-		}
-
-		@movers.each { |mover| mover.update }
-
+		@space.update
+	
 	end
 
 	def draw
 
-		@static.each { |static| static.draw }
-		@movers.each { |mover| mover.draw }
+		@space.draw
 
 	end
 

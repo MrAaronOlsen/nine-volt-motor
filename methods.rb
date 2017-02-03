@@ -46,28 +46,9 @@ def dot(v1, v2) #the dot product of two vectors
 
 end
 
-# Collision Related Methods
+# Collision Related Functions
 
-def bbox_collide(obj1, obj2)
-
-	if aabb(obj1.bbox, obj2.bbox)
-
-		obj2.groups.each { |group| 
-
-			if aabb(obj1.bbox, group.bbox)
-						
-				return group
-				
-			end
-		}
-
-	end
-
-	return false
-
-end
-
-def aabb(bbox1, bbox2)
+def test_aabb(bbox1, bbox2)
 
 	if bbox1.right < bbox2.left || bbox1.left > bbox2.right || bbox1.bot < bbox2.top || bbox1.top> bbox2.bot
 		return false
@@ -77,16 +58,16 @@ def aabb(bbox1, bbox2)
 
 end
 
-def reflect(velocity, mag) 
+def reflect_vector(vector, face) 
 
-	n = mag.normal_unit
+	face_norm = face.normal_unit
    
-   	dot = dot(n, velocity)
-   	reflect = Vector.mult(n, dot)
+   	dot = dot(face_norm, vector)
+   	reflection = Vector.mult(face_norm, dot)
 
-   	reflect.mult(-2)
-   	reflect.add(velocity)
+   	reflection.mult(-2)
+   	reflection.add(vector)
 
-	return reflect
+	return reflection
 
-end
+end 

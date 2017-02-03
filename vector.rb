@@ -11,31 +11,31 @@ class Vector
 	def initialize(x, y) #creates a new vector given x and y components
 
 		@x = x
-	   	@y = y
+	  @y = y
 
 	end
 
 	def self.from_heading(degree) #creates a new unit vector at a specific heading
 
-      		return Vector.new(Math.cos(radian(degree)), Math.sin(radian(degree)))
+  	return Vector.new(Math.cos(radian(degree)), Math.sin(radian(degree)))
 
-    	end
+  end
 
-    	def self.from_length(length) #creates a new vector from a length at 0 heading
+  def self.from_length(length) #creates a new vector from a length at 0 heading
 
-    		return Vector.new(length, 0)
+    return Vector.new(length, 0)
 
-    	end
+  end
 
-    	def self.from_velocity(length, heading)
+  def self.from_velocity(length, heading)
 
-    		velocity = Vector.new(1,0)
-    		velocity.rotate(heading)
-    		velocity.set_mag(length)
-    		
-    		return velocity
+		velocity = Vector.new(1,0)
+		velocity.rotate(heading)
+		velocity.set_mag(length)
+		
+		return velocity
 
-    	end
+	end
 
 # Vector Math
 
@@ -211,19 +211,19 @@ class Vector
 
  	end
 
-    	def self.make_normal_unit(vector) #converts passed vector to a normal unit of itself
+	def self.make_normal_unit(vector) #converts passed vector to a normal unit of itself
 
-    		vector.make_normal
-    		return vector.make_unit
+		vector.make_normal
+		return vector.make_unit
 
-    	end
+	end
 
-    	def flip # flips vector
+	def flip # flips vector
 
-    		@x*-1
-    		@y*-1
+		@x*-1
+		@y*-1
 
-    	end
+	end
 
 	def max(max) #set maximum magnitude of self
 

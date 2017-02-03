@@ -1,20 +1,18 @@
 class Collision
 
-	attr_accessor :mtv
-	attr_reader :collision, :collision_face
+	attr_reader :face, :mtv_ratio, :test, :check_part, :against_part
 
 	def initialize(check_part, against_part)
 
 		@check_part = check_part
-		@velocity = @check_part.velocity
-
-		@against_part = @against_part
-		@points = against_part.points
+		
+		@against_part = against_part
+		@against_part_points = against_part.points
 
 		if check_part.type == "ball"
-			@radius = check_part.radius
-			@collision = ballvspoly
-		end
+			@half_width = check_part.radius
+			@test = ballvspoly
+		else @test = false end
 
 	end
 
@@ -23,41 +21,29 @@ class Collision
 		f_start = 0
 		f_end = 1
 
-		until f_end == @points.length do
+		until f_end == @against_part_points.length do
 
-			c = Vector.sub(@check_part.location.location, @points[f_start].location)
+			c = Vector.sub(@check_part.location.location, @against_part_points[f_start].location)
+			@face = Vector.sub(@against_part_points[f_end].location, @against_part_points[f_start].location)
 
-			if c.mag < @radius*0.8 # corner
-				
-				face = c.normal
-
-				@penetration = @radius - c.mag
-				@mtv = get_mtv(c.mag)
-				@collision_face = face
-
-				return true
-
-			else # side
-
-				face = Vector.sub(@points[f_end].location, @points[f_start].location)
-
-				face_dot = dot(face.unit, c)
+			face_dot = dot(@face.unit, c)
+			face_normal_dot = dot(face.normal_unit, c)
 			
-				if dot(@check_part.velocity, face.normal) > 0
-					face_normal_dot = dot(face.normal_unit_r, c)
-				else
-					face_normal_dot = dot(face.normal_unit, c)
-				end
-				
-				if face_dot >= 0 && face_dot <= face.length && face_normal_dot >= 0 &&  face_normal_dot <= @radius
-				
-					@penetration = @radius - face_normal_dot
-					@mtv = get_mtv(face_normal_dot)
-					@collision_face = face
-					
-					return true
+			if c.mag <= @half_width && c.mag < face_normal_dot # corner
+			
+				@face = c.normal
 
-				end
+				penetration = @half_width - c.mag
+				@mtv_ratio = get_mtv_ratio(penetration, c.mag)
+	
+				return true
+			
+			elsif face_dot >= 0 && face_dot <= face.length && face_normal_dot >= 0 && face_normal_dot <= @half_width
+			
+				penetration = (@half_width - face_normal_dot)/face_normal_dot
+				@mtv_ratio = get_mtv_ratio(penetration, face_normal_dot)
+				
+				return true
 
 			end
 
@@ -70,18 +56,10 @@ class Collision
 
 	end
 
-	def get_mtv(face_normal_dot)
+	def get_mtv_ratio(penetration, face_normal_dot)
 
-		mtv_ratio = @penetration/face_normal_dot
-	
-		mtv_mag = @velocity.mag*mtv_ratio
-		
-		mtv = @velocity.unit
-		mtv.set_mag(mtv_mag*1.5)
-		
-		return mtv
+		return penetration/face_normal_dot
 
 	end
 
 end
-

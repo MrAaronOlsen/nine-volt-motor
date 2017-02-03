@@ -1,8 +1,9 @@
 require './body'
-require './group'
 require './part'
 require './point'
+require './movement'
 
+require './space'
 require './bbox'
 require './collision'
 
