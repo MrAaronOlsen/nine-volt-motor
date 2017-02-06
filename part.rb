@@ -118,7 +118,7 @@ class Part
 		#@points.each { |point| point.draw}
 
 		#@location.draw(0xff_00ff00, 10)
-		@bbox.draw
+		#@bbox.draw
 		#@bbox.center.draw(0xff_00ff00, 4)
 
 	end

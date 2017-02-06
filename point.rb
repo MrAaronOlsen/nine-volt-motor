@@ -73,9 +73,9 @@ class Point
 		axis1 = Vector.new(radius, 0)
 		axis2 = Vector.new(radius, 0)
 		
-		15.times {
+		60.times {
 
-			axis2.rotate(24)
+			axis2.rotate(6)
 
 			x1 = axis1.x+@x
 			y1 = axis1.y+@y
@@ -84,7 +84,7 @@ class Point
 
 			Gosu.draw_line(x1, y1, color, x2, y2, color, 2)
 
-			axis1.rotate(24)
+			axis1.rotate(6)
 		
 		}
 

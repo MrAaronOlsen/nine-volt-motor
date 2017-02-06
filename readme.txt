@@ -65,4 +65,42 @@ V 0.1
 
 		- Add data structures for responce of both objects on collision. This will allow forces to finally be useful.
 
+V 0.15
 
+	- Groups Class - Depreciated.
+		- Wasn't going to play nice with messaging structure.
+	
+	- Part Class
+		- Fixed segments, which were not being initialized at origin.
+		- Removemed all independent movement options. Now relies soley on Body for movement.
+
+	- Body Class - Updated
+		- Accepts Movement Class.
+		- Manages it's own responce to a Collision, or future events.
+
+	- Movement Class - Added
+		- Holds all movement data for Body, allowing Body to manage it's own movement based on events.
+
+	- Space Class - Added
+		- Holds Bodies that are to be Collision tested against each other.
+		- Acts as the main controller, updating, testing, and drawing all added Bodies.
+
+	- Collision Class - Updated
+		- Is still a mess, but dependencies are at least reduced.
+		- Collision visual tests added.
+		- Fixed Ball vs Poly corner issue.
+		- Fixed Minimum Translation Vector (is now actually a minimum translation vector).
+		- Added Ball vs Ball test.
+
+	- Test Class
+		- Mostly for me. Not planning on keeping long term.
+		- Allows data to be printed or drawn at any point along cycle chain.
+
+	- Next Step
+		- Add triangles and filled in ball.
+		- Add Poly vs Poly Collision Test. Would be nice if this could handle segs, rects, and tri.
+		- Clean up Collision Testing.
+		- Clean up Body Responce, or move to own class, or something. It seems wrong hanging out it the Body Class.
+
+	- Longer Term
+		- Add forces.

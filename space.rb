@@ -1,5 +1,7 @@
 class Space
 
+  attr_reader :bodies
+
   def initialize
 
     @bodies = []
@@ -8,24 +10,28 @@ class Space
 
   def add_body(body)
 
-    @bodies << body
-
+    if body.is_a? Array
+      body.each { |thing| bodies << thing }
+    else
+      bodies << body
+    end
+    
   end
 
   def update
 
-    @bodies.each { |body| body.update }
-    test_body_bbox(@bodies)
+    bodies.each { |body| body.update }
+    test_body_bbox
     
   end
 
   def draw
 
-    @bodies.each { |body| body.draw }
+    bodies.each { |body| body.draw }
 
   end
 
-  def test_body_bbox(bodies)
+  def test_body_bbox
 
     check = 0
 
@@ -47,8 +53,6 @@ class Space
   end
 
   def test_part_bbox(body1, body2)
-
-    @events = []
 
     body1.parts.each { |part1| 
     

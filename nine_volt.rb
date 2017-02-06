@@ -9,3 +9,5 @@ require './collision'
 
 require './methods'
 require './vector'
+
+require './test'

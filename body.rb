@@ -86,21 +86,6 @@ class Body
 		
 		count = 1
 
-		events.each { |event|
-
-			if event.test
-			puts ""
-			puts "Event Num: #{count}"
-			puts "Number of Events: #{events.length}"
-			puts "Check Part: #{event.check_part.type}"
-			puts "Against Part: #{event.against_part.type}"
-			puts "MTV Ratio: #{event.mtv_ratio}"
-			end
-		
-			count+=1
-			
-		}
-
 		if events.length > 0
 			
 			events.each { |event|	
@@ -109,17 +94,30 @@ class Body
 
 					if event.test == true
 						
-						puts "HIT"
+							$test.add(Part.ball(@movement.location.x, @movement.location.y, 50, 0xff_ff0000))
+							
+							$test.add("\nCollision")
+							$test.add("Check Part: #{event.check_part.type}")
+							$test.add("Against Part: #{event.against_part.type}")
+							$test.add("Type: #{event.type}")
+
+							$test.add("\nDirection: #{dot(event.face.normal, @movement.velocity)}")
+	
+							$test.add("Face Normal Dot: #{event.face_normal_dot}")
+							$test.add("Event MTV: #{event.mtv.mag}")
+							
+						@movement.location.add(event.mtv)
 						
-						mtv = @movement.velocity.copy
-						mtv.mult(event.mtv_ratio)
-
-						reflected_mtv = reflect_vector(mtv, event.face)
-						mtv.add(reflected_mtv)
-
-						@movement.location.add(mtv)
+							$test.add(Part.ball(@movement.location.x, @movement.location.y, 50, 0xff_ffff00))
+						
+						@movement.location.add(event.mtv)
+						
+							$test.add(Part.ball(@movement.location.x, @movement.location.y, 50, 0xff_00ff00))
+						
 						@movement.reflect(event.face)
-						
+
+							$test.add("\nNew Direction: #{dot(event.face.normal, @movement.velocity)}")
+
 					end
 				end
 			}
@@ -136,7 +134,7 @@ end
 	# Extra Draws
 
 		#@location.draw(0xff_ffff00, 20)
-		@bbox.draw
+		#@bbox.draw
 		#@bbox.center.draw(0xff_ffff00, 8)
 
 	end
