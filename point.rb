@@ -1,13 +1,14 @@
 class Point
 
-	attr_accessor :x, :y, :location, :origin, :tether
+	attr_accessor :x, :y, :location, :mass, :origin, :tether
 
 # Initialize Functions
 	
-	def initialize(x , y)
+	def initialize(x, y, mass = 1)
 
-		@x = x
-		@y = y
+		@x = x.to_f
+		@y = y.to_f
+		@mass = mass
 
 		@location = Vector.new(@x, @y)
 		@origin = Vector.new(@x, @y)

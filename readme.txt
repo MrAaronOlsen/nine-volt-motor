@@ -104,3 +104,57 @@ V 0.15
 
 	- Longer Term
 		- Add forces.
+
+V 0.2
+
+	- Point Class - Updated
+		- Points now hold mass, defaulted to 1. This is used to calculate centroid in Part.
+
+	- Shape Class - Update
+		- Added triangle.
+		- Added filled-in circle.
+
+	- Part Class - Updated
+		- Added centroid which is center of gravity. Center no longer tied to bounding box.
+		- Can now add Material to parts.
+
+	- Body Class - Updated
+		- Is getting a little messy.
+		- Now holds all movement info.
+		- Added force responce to mass.
+		- Movement is now acceleration bassed.
+		- Can now add Bindings.
+		- Added rules: collided, grounded, resting.
+		- Can add Material to overide all Part Materials
+
+	- Space Class - Updated
+		- Now accepts Environment
+
+	- Movement Class - Depreciated
+		- All movement now held in Body.
+
+	- Collision Class - Updated
+		- Is still a mess, but a little cleaned up.
+
+	- Physics Class - Created
+		- Holds Impulse calculation
+
+	- Binding Class - Created
+		- Holds binding information for Body.
+		- Binding(key press, action, rule).
+
+	- Material Class - Created
+		- Holds friction and bounce forces
+	
+	- Environment Class - Created
+		- Holds gravity and drag forces
+
+	- Ruby Class - Created
+		- Holds some handy Ruby shortcuts
+
+	- Next Step
+		- Add call back functions to detect collisions and respond to them
+
+	- Longer Term
+		- Add Poly vs Poly Collision Test.
+		- Add Rotation Forces

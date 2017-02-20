@@ -107,12 +107,14 @@ class Vector
 
 	def div(n) #devide self with vector or scalar
 
-		if n.is_a? Vector
-			@x/=n.x
-			@y/=n.y
-		else
-			@x/=n
-			@y/=n
+		if n!= 0
+			if n.is_a? Vector
+				@x/=n.x
+				@y/=n.y
+			else
+				@x/=n
+				@y/=n
+			end
 		end
 
 	end
@@ -144,12 +146,21 @@ class Vector
 
 	end
 
+	def distance(v1, v2) #distance between v1 and v2, withou having to make a vector first
+
+		return Math.sqrt(((v1.x-v2.x)**2) + ((v1.y-v2.y)**2) + ((v1.mag-v2.mag)**2))
+
+	end
+
 	alias_method :set_length, :set_mag
 
  	def unit #return unit vector of self
 
- 		return Vector.unit(self)
-
+		unit = self.copy
+ 		unit.make_unit
+		
+		return unit
+	
  	end
 
  	def make_unit #makes self a unit vector 
@@ -162,10 +173,11 @@ class Vector
 
  	def self.unit(vector) #converts passed vector to unit
 
- 		m = vector.mag
+ 		unit = vector
+ 		unit.make_unit
 
- 		if m != 0 then return Vector.div(vector, m) end
-
+		return unit
+		
  	end
 
  	def normal #return normal vector of self
@@ -220,12 +232,11 @@ class Vector
 
 	def flip # flips vector
 
-		@x*-1
-		@y*-1
+		return Vector.new(@x*-1, @y*-1)
 
 	end
 
-	def max(max) #set maximum magnitude of self
+	def max(max) #set maximum magnitude of self also returns true if max was adjusted
 
 		if mag > max
 			set_mag(max) 
@@ -236,7 +247,7 @@ class Vector
 
 	end
 
-	def min(min) #set minimum magnitude of self
+	def min(min) #set minimum magnitude of self also returns true if min was adjusted
 
 		if mag < min
 			set_mag(min)
@@ -260,31 +271,31 @@ class Vector
     		
 	end
 
-	def heading #calculates degree of rotation for self
+	def heading #calculates heading of self in degrees
 
 		radian = Math.atan2(@y, @x)
     		
-    		if degree(radian) < 0
-    			return degree(radian)+360
-    		elsif degree(radian) > 360
-    			return degree(radian)-369
-    		else
-    			return degree(radian)
-    		end
-
+    	if degree(radian) < 0
+    		return degree(radian)+360
+    	elsif degree(radian) > 360
+    		return degree(radian)-369
+    	else
+    		return degree(radian)
     	end
 
-    	def set_heading(heading)
+    end
 
-    		vector = Vector.new(1,0)
-    		vector.rotate(heading)
-    		vector.set_mag(mag)
+    def set_heading(heading) #set heading of self by degrees
 
-    		return vector
+    	vector = Vector.new(1,0)
+    	vector.rotate(heading)
+    	vector.set_mag(mag)
+
+    	return vector
     	
-    	end
+    end
 
-    	def rotate_r(radian) #rotate self by a radian
+    def rotate_r(radian) #rotate self by a radian
 
 		theta = radian
 
@@ -359,6 +370,7 @@ class Vector
 	end
 
 	def lerp #linear interpolate to another vector
+		#nothing here yet
 	end
 
 	def dot(vector) #the dot product of self and vector
@@ -373,23 +385,31 @@ class Vector
 
 	end
 
-
-	def distance(vector) #finds the Euclidean distance between self and a vector
-	
-		return Math.sqrt(((@x-vector.x)**2) + ((@y-vector.y)**2) + ((mag-vector.mag)**2))
-
-	end
-
 	def copy #returns copy of self as new Vector
 
 		return Vector.new(@x, @y)
 
 	end
 
-	def copy_unit #returns copy of self as new Vector unit
+end
 
-		return Vector.unit(self)
+# Commonly needed vector functions I don't mind everything having access too
 
-	end
+def dot(v1, v2) #the dot product of two vectors
+
+	return v1.x*v2.x + v1.y*v2.y
 
 end
+
+def radian(degree) #convert a degree to a radian
+
+	return degree*(Math::PI/180)
+
+end
+
+def degree(radian) #convert a radian to a degree
+
+	return radian*(180/Math::PI)
+
+end
+

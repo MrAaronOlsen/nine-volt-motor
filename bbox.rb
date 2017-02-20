@@ -31,7 +31,6 @@ class BBox
 			 "bot" => @bot,
  	   		 "left" => @left,
 			 "right" => @right }
-
 	end
 
 	def find_center(side)
