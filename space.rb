@@ -1,15 +1,13 @@
 class Space
 
-  attr_reader :bodies, :report
+  attr_reader :bodies, :environment
 
 # Initialize Functions
 
-  def initialize
+  def initialize(gravity = 5)
 
     @bodies = []
     @environment = Environment.new
-
-    @report = []
 
   end
 
@@ -35,27 +33,12 @@ class Space
 
   def update
 
-    @report = []
-
-    bodies.each { |body| 
-    
-      body.update(@environment) 
-    
-      @report << body.report
-
-  }
+    bodies.each { |body| body.update(environment) }
     
     check_bboxes
-
+    
   end
 
-  # Report Call Backs
-
-  def post_report
-
-    puts @report
-
-  end
 
   # Bounding Box Checks
 
@@ -82,18 +65,22 @@ class Space
 
   def check_part_bboxes(body1, body2)
 
-    body1.parts.each { |part1| 
+    body1.parts.each do |part1| 
     
-      body2.parts.each { |part2| 
+      body2.parts.each do |part2| 
     
         if bbox_query(part1.bbox, part2.bbox)
           
-          body1.add_event(Collision.new(part1, body1, part2, body2))
-          body2.add_event(Collision.new(part2, body2, part1, body1))
+          body1_col = Collision.new(part1, body1, part2, body2)
+          body2_col = Collision.new(part2, body2, part1, body1)
+
+          body1.add_event(body1_col) if body1_col.query
+          body2.add_event(body2_col) if body2_col.query
 
         end
-      }
-    }
+        
+      end
+    end
   end
 
   def bbox_query(bbox1, bbox2)
@@ -103,6 +90,25 @@ class Space
 	  else 
 		  return true
 	  end
+
+  end
+
+# Constraints
+
+  def constrain(object, vector)
+
+    bodies.each { |body| 
+      if body == object 
+        
+        puts ""
+        puts object.velocity.mag
+        puts body.velocity.mag
+        body.velocity.add(vector)
+        puts body.velocity.mag
+        puts ""
+
+      end 
+    }
 
   end
 

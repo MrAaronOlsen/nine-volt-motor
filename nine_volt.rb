@@ -3,12 +3,12 @@ require './part'
 require './point'
 
 require './space'
-require './binding'
 require './environment'
 require './material'
 
 require './bbox'
 require './collision'
+require './manifold'
 require './vector'
 
 require './ruby'
@@ -17,13 +17,9 @@ require './test'
 
 # Constants
 
-$SLOP = 0.99 # scaler that allows objects to overlap. Play with this to help reduce resting jitter.
-$IMPULSE = 0.995 # effects force of impulse.
-$RESTITUTION = 0.3 # effects angle of impulse reflection. 1 = perfect elestic, 0 = perfect plastic.
+$SLOP = 0.15 # Allows objects to overlap to help reduce resting jitter.
+$IMPULSE = 0.99 # Effects the dampening of an impulse. 1 = no change in force, 0 = Objects go crazy.
+$RESTING = 0.03 # Effects how fast an object enters a resting state. 0 = Never rests, 1 = Rests really fast.
+$RESTITUTION = 0.4 # Effects angle of impulse reflection. 1 = perfect elestic, 0 = perfect plastic.
 
-$HISTORY = 10 # Number of updates stored for Body.
-$GROUNDED = 0.1 # Minimum percent pf $HISTORY an object must report a collision to be considered grounded.
-$TOUCHING = 2 # Number of different collisions during an update that will trigger a resting call.
-$RESTING = 0.33 # Minimum percent of $HISTORY an object must report resting to actually be considered resting.
-$AVERAGE_V = 0.1 # Average velocity of body over $HISTORY to be considered no longer moving.
-
+$HISTORY = 8 # Number of iterations for resolving collision responces. Probably don't mess with this.

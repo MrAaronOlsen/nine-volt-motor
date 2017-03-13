@@ -1,27 +1,30 @@
 module Physics
 
-    def impulse_vector(a_velocity, a_mass, b_velocity, b_mass, face) 
+  def get_impulse(a_vel, a_i_mass, b_vel, b_i_mass, face, penetration) 
 
-		direction = dot(a_velocity, b_velocity)
-		
 		face_norm = face.normal_unit
-		rel_vel = Vector.sub(a_velocity, b_velocity)
+		rel_vel = Vector.sub(a_vel, b_vel)
+		vel_along_normal = dot(rel_vel, face.normal)	
+		
+		return a_vel if vel_along_normal > 0
+		return Vector.new(0,0) if a_vel.mag < 0.01
 		
 		restitution = 1 + $RESTITUTION
 
-		j = dot((Vector.mult(rel_vel, -restitution)), face_norm)/(a_mass+b_mass)
-
+		j = dot((Vector.mult(rel_vel, -restitution)), face_norm)/(a_i_mass+1*b_i_mass)
 		j = Vector.mult(face_norm, j)
+		j.mult(-a_i_mass*$IMPULSE)
 
-		j.mult(a_mass)
-		j.mult(-1)
+		impulse = Vector.sub(a_vel, j)		
+			
+		return impulse
 
-		reflection = Vector.sub(a_velocity, j)
+  end
 
-		reflection.mult($IMPULSE)
-		 		
-	    return reflection
+	def get_mtv(penetration, face)
 
-    end
+		Vector.mult(face.normal_unit, [penetration-$SLOP, 0].max)
+		
+	end
 
 end

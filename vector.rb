@@ -267,13 +267,13 @@ class Vector
 
 	def heading_r #calculates radian of rotation for self
 
-		return Math.atan2(@y, @x)
+		return Math.atan2(y, x)
     		
 	end
 
 	def heading #calculates heading of self in degrees
 
-		radian = Math.atan2(@y, @x)
+		radian = Math.atan2(y, x)
     		
     	if degree(radian) < 0
     		return degree(radian)+360
@@ -299,10 +299,10 @@ class Vector
 
 		theta = radian
 
-		x = @x
+		x = x
 
-		@x = x*Math.cos(theta) - @y*Math.sin(theta)
-		@y = x*Math.sin(theta) + @y*Math.cos(theta)
+		@x = x*Math.cos(theta) - y*Math.sin(theta)
+		@y = x*Math.sin(theta) + y*Math.cos(theta)
 
 	end
 
@@ -313,10 +313,10 @@ class Vector
 		@x-=location.x
 		@y-=location.y
 
-		x = @x
+		x = x
 
-		@x = x*Math.cos(theta) - @y*Math.sin(theta)
-		@y = x*Math.sin(theta) + @y*Math.cos(theta)
+		@x = x*Math.cos(theta) - y*Math.sin(theta)
+		@y = x*Math.sin(theta) + y*Math.cos(theta)
 
 		@x+=location.x
 		@y+=location.y
@@ -329,8 +329,8 @@ class Vector
 
 		x = @x
 
-		@x = x*Math.cos(theta) - @y*Math.sin(theta)
-		@y = x*Math.sin(theta) + @y*Math.cos(theta)
+		@x = x*Math.cos(theta) - y*Math.sin(theta)
+		@y = x*Math.sin(theta) + y*Math.cos(theta)
 
 	end
 

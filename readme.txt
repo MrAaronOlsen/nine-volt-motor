@@ -158,3 +158,30 @@ V 0.2
 	- Longer Term
 		- Add Poly vs Poly Collision Test.
 		- Add Rotation Forces
+
+	V 0.25
+
+	- Cleaned up and refactored all Classes
+
+	- Space Class - Updated
+		- Only true collision queries are now sent to Body responce handlers.
+
+	- Body Class - Updated
+		- Created a history that holds Manifold class.
+		- Resting state determined by incrementally reducing gravity on objects.
+			in constant contact with another body until force of gravity becomes 0.
+		- Refactored like heck. Looking better now. Still messy though.
+
+	- Bindings Class - Depreciated
+		- Starting over with this. Didn't like how it was playing out.
+
+	- Manifold Class - Created
+		- Main class for holding info about collisions.
+		- Will hopefully become main callback for manipulating collision responces.
+
+	- Physics Module - Updated
+		- Now a Module.
+		- Tweeked impulse vector to behave better.
+		- Moved minimum translation vector here. Tweeked this too.
+
+	- Next Step 

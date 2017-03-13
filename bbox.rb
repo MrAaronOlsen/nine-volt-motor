@@ -2,52 +2,44 @@
 
 class BBox
 
-	attr_reader :side, :top, :bot, :left, :right, :center
+	attr_reader :top, :bot, :left, :right, :center
 
 	def initialize(points)
 
-		@side = find_sides(points)
-		@center = find_center(@side)
+		find_sides(points)
+		find_center
 
 	end
 
 	def find_sides(points)
 
-	x = []
-	y = []
+		x = []
+		y = []
 
-		points.each { |point|
-
-			x << point.x
-			y << point.y
-		}
+		points.each { |point| x << point.x ; y << point.y }
 
 		@top = y.min
 		@bot = y.max
 		@left = x.min
 		@right = x.max
 
-	return { "top" => @top,
-			 "bot" => @bot,
- 	   		 "left" => @left,
-			 "right" => @right }
 	end
 
-	def find_center(side)
+	def find_center
 
-		x = ((side["right"] - side["left"])/2)+side["left"]
-		y = ((side["bot"] - side["top"])/2)+side["top"]
+		x = ((right - left)/2)+left
+		y = ((bot - top)/2)+top
 
-		return Point.new(x, y)
+		@center = Point.new(x, y)
 
 	end
 
 	def draw
 
-		Gosu.draw_line(@side["left"], @side["top"], 0x99_ff0000, @side["right"], @side["top"], 0x99_ffffff)
-		Gosu.draw_line(@side["right"], @side["top"], 0x99_00ff00, @side["right"], @side["bot"], 0x99_ffffff)
-		Gosu.draw_line(@side["right"], @side["bot"], 0x99_0000ff, @side["left"], @side["bot"], 0x99_ffffff)
-		Gosu.draw_line(@side["left"], @side["bot"], 0x99_ffff00, @side["left"], @side["top"], 0x99_ffffff)
+		Gosu.draw_line(left, top, 0x99_ff0000, right, top, 0x99_ffffff)
+		Gosu.draw_line(right, top, 0x99_00ff00, right, bot, 0x99_ffffff)
+		Gosu.draw_line(right, bot, 0x99_0000ff, left, bot, 0x99_ffffff)
+		Gosu.draw_line(left, bot, 0x99_ffff00, left, top, 0x99_ffffff)
 
 	end
 

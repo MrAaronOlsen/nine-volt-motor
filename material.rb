@@ -5,13 +5,13 @@ class Material
     def initialize(mu = 0, bounce = 0)
 
         @mu = mu
-        @bounce = bounce
+        @bounce = -bounce
 
     end
 
     def friction(velocity, face)
         
-        friction_mag = Vector.mult(face.normal_unit, @mu)
+        friction_mag = Vector.mult(face.normal_unit, mu)
         
         friction = velocity.unit
         friction.mult(friction_mag)
@@ -23,9 +23,7 @@ class Material
 
     def bounce(velocity)
 
-        bounce_mag = Vector.mult(velocity.unit, @bounce)
-
-        return bounce_mag
+        Vector.mult(velocity.unit, @bounce)
 
     end
 
