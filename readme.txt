@@ -69,7 +69,7 @@ V 0.15
 
 	- Groups Class - Depreciated.
 		- Wasn't going to play nice with messaging structure.
-	
+
 	- Part Class
 		- Fixed segments, which were not being initialized at origin.
 		- Removemed all independent movement options. Now relies soley on Body for movement.
@@ -145,7 +145,7 @@ V 0.2
 
 	- Material Class - Created
 		- Holds friction and bounce forces
-	
+
 	- Environment Class - Created
 		- Holds gravity and drag forces
 
@@ -184,4 +184,4 @@ V 0.2
 		- Tweeked impulse vector to behave better.
 		- Moved minimum translation vector here. Tweeked this too.
 
-	- Next Step 
+	- Next Step

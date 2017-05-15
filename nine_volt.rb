@@ -1,19 +1,19 @@
-require './body'
-require './part'
-require './point'
+require_relative '../nine_volt/body'
+require_relative '../nine_volt/part'
+require_relative '../nine_volt/point'
 
-require './space'
-require './environment'
-require './material'
+require_relative '../nine_volt/space'
+require_relative '../nine_volt/environment'
+require_relative '../nine_volt/material'
 
-require './bbox'
-require './collision'
-require './manifold'
-require './vector'
+require_relative '../nine_volt/bbox'
+require_relative '../nine_volt/collision'
+require_relative '../nine_volt/manifold'
+require_relative '../nine_volt/vector'
 
-require './ruby'
+require_relative '../nine_volt/ruby'
 
-require './test'
+require_relative '../nine_volt/test'
 
 # Constants
 

@@ -1,4 +1,4 @@
-require "./physics"
+require_relative "../nine_volt/physics"
 
 class Body
 
@@ -25,7 +25,7 @@ class Body
 		@points = []
 		@parts = []
 		@forces = []
-		
+
 		@events = []
 		@history = []
 
@@ -41,14 +41,14 @@ class Body
 
 		update_centroid
 		update_bbox
-	
+
 	end
 
 	def i_mass
 
 		mass == 0 ? 0 : 1/mass.to_f
-	
-	end	 
+
+	end
 
 # Build Functions
 
@@ -86,7 +86,7 @@ class Body
 		if type == "mover"
 
 			respond?
-			
+
 			add_env_forces(environment)
 			apply_forces
 
@@ -99,7 +99,7 @@ class Body
 
 		update_centroid
 		update_bbox
-		
+
 		acceleration.mult(0)
 		@events = []
 		@forces = []
@@ -108,17 +108,17 @@ class Body
 
 	def move
 
-		velocity.add(acceleration)		
+		velocity.add(acceleration)
 		velocity.max(max_v)
-		
+
 		location.add(velocity)
-		
+
 		rotate(rotation)
 
 	end
 
 	def update_centroid
-		
+
 		x = 0
 		y = 0
 
@@ -127,12 +127,12 @@ class Body
 		parts.each { |part| mass+=part.centroid_mass }
 
 		parts.each do |part|
-			
+
 			x = x + part.centroid.x * part.centroid_mass
 			y = y + part.centroid.y * part.centroid_mass
 
 		end
-		
+
 		@centroid = Point.new(x/mass, y/mass)
 
 	end
@@ -162,7 +162,7 @@ class Body
 	def rotate(degree)
 
 		parts.each { |part| part.rotate(degree) }
-		
+
 	end
 
 	def add_force(force)
@@ -174,42 +174,42 @@ class Body
 	def add_env_forces(environment)
 
 		add_force(environment.drag(velocity))
-		
+
 		if in_constant_contact?
-			
+
 			gravity = environment.gravity.copy
-			
+
 			gravity_scalar = [history.first.gravity_scalar-$RESTING, 0].max
-			
+
 			history[$HISTORY-1].gravity_scalar = gravity_scalar
 
 			gravity.mult(gravity_scalar)
 			add_force(gravity)
-		
+
 		else
 			add_force(environment.gravity)
 		end
-		
+
 	end
 
 	def apply_force(force)
 
-		force = Vector.mult(force, i_mass.to_f)	
+		force = Vector.mult(force, i_mass.to_f)
 		acceleration.add(force)
-	
+
 	end
 
 	def apply_forces
 
 		forces.each { |force| apply_force(force) }
-	
+
 	end
 
 	def in_constant_contact?
 
-		if history.first != nil && history[$HISTORY-1] != nil 
+		if history.first != nil && history[$HISTORY-1] != nil
 			return true
-		else return false end 
+		else return false end
 
 	end
 
@@ -218,7 +218,7 @@ class Body
 	def add_event(event)
 
 		events << event
-	
+
 	end
 
 	def add_history
@@ -234,24 +234,24 @@ class Body
 		history << manifold
 
 	end
-	
+
 	def respond?
 
 		events.sort_by!(&:penetration)
-		respond(events.last) if events.last != nil		
+		respond(events.last) if events.last != nil
 
 	end
 
 	def respond(event)
-		
+
 		impulse = get_impulse(event.check_body_v, i_mass, event.against_body_v, event.against_body.i_mass, event.face, event.penetration)
 		mtv = get_mtv(event.penetration, event.face)
 
 		resolve_impulse(impulse, mtv)
-		
+
 		add_force(event.against_part.material.friction(velocity, event.face))
 		add_force(event.check_part.material.bounce(velocity))
-		
+
 	end
 
 	def resolve_impulse(impulse, mtv)
@@ -259,16 +259,16 @@ class Body
 		replace_history(Manifold.new(impulse, mtv))
 
 		@velocity = impulse
-		location.add(mtv)			
-		
+		location.add(mtv)
+
 	end
 
 # Draw Functions
 
 	def draw
 
-		parts.each { |part| part.draw } 
-		
+		parts.each { |part| part.draw }
+
 	# Extra Draws
 
 		#location.draw(0xff_ffff00, 20)
