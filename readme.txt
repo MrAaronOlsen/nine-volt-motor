@@ -1,3 +1,5 @@
+* This is a working, although limmited, 2d physics engine writtin in ruby. It was how I learned ruby, and I'm proud of it. That said, it has no testing, serious structural flaws, and fundemental missunderstanding of what phsyics engines are supposed to be. I've completely abandonded this version and started on [Twelve Volt](https://github.com/MrAaronOlsen/twelve_volt) instead.
+
 Nine Volt
 
 	A very basic game engine for Ruby for use with Gosu
@@ -6,7 +8,7 @@ Nine Volt
 
 Description
 
-	I discovered vectors and decided I'd just embrace that can of worms. One thing led to another and I decided I wanted to collide things. That can of worms led me to creating this game engine. This project will likely never be more than my personal learning environment for this sort of thing. It's simple, not very practical, and will never have very good documention. With that said, There are Ruby examples of Vectors, Shape and Body creation, AABB testing, SAT collision detection, and MTV reflection responce. I certainly didn't find many examples myself...
+	I discovered vectors and decided I'd just embrace that can of worms. One thing led to another and I decided I wanted to collide things. That can of worms led me to creating this physics engine. This project will likely never be more than my personal learning environment. It's simple, not very practical, and will never have very good documention. With that said, There are Ruby examples of Vectors, Shape and Body creation, AABB testing, SAT collision detection, and MTV reflection responce. I certainly didn't find many examples myself...
 
 V 0.1
 
@@ -185,3 +187,4 @@ V 0.2
 		- Moved minimum translation vector here. Tweeked this too.
 
 	- Next Step
+		- Start from scratch on twelve-volt...
