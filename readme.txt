@@ -1,3 +1,5 @@
+This is now archived. It's my first swing at a 2d physics engine with little to no knowledge of how these things work. It's flawed in so many ways, but I'm proud I managed to get this far. My efforts are now in Volt, which demonstrates common 2d physics practices. None of the wierd stuff you'll find here.
+
 * This is a working, although limited, 2d physics engine written in ruby. It was how I learned ruby, and I'm proud of it. That said, it has no testing, serious structural flaws, and fundamental misunderstanding of what physics engines are supposed to be. I didn't even know about markdown... I've completely abandoned this version and started on Twelve Volt (https://github.com/MrAaronOlsen/twelve_volt) instead.
 
 Nine Volt
